@@ -1,0 +1,36 @@
+﻿<Window x:Class="PracticaFinal.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PracticaFinal"
+        mc:Ignorable="d"
+        Title="IGU Fitness Tracker 2025" Height="450" Width="800">
+    <TabControl>
+        <!-- Pestaña Ejercicios -->
+        <TabItem Header="Ejercicios">
+            <Grid>
+                <DataGrid x:Name="EjerciciosDataGrid" AutoGenerateColumns="False" IsReadOnly="True" 
+                                    Margin="5,5,5,5" SelectionMode="Single" SelectionUnit="FullRow">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="150"/>
+                        <DataGridTextColumn Header="Descripción" Binding="{Binding Descripcion}" Width="*"/>
+                        <DataGridTextColumn Header="Grupos Musculares" Binding="{Binding GruposMusculares}" Width="150"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
+                                                  VerticalAlignment="Bottom" Margin="10">
+                    <Button Content="Añadir" Width="75" Margin="5" Click="Añadir_Click"/>
+                    <Button Content="Modificar" Width="75" Margin="5" Click="Modificar_Click"/>
+                    <Button Content="Eliminar" Width="75" Margin="5" Click="Eliminar_Click"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+        
+        <!-- Pestaña Daily Insigth-->
+        <TabItem Header="Daily Insigth">
+
+        </TabItem>
+    </TabControl>
+
+</Window>
