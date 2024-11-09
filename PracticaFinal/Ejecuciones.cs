@@ -8,7 +8,7 @@ namespace PracticaFinal
 {
     public class Ejecuciones
     {
-        public string Ejercicio { get; set; }
+        public string Nombre { get; set; }
         public int Repeticiones { get; set; }
         public int Peso { get; set; }
         public DateTime Fecha { get; set; }

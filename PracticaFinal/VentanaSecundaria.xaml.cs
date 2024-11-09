@@ -20,14 +20,13 @@ namespace PracticaFinal
     /// </summary>
     public partial class VentanaSecundaria : Window
     {
-        public ObservableCollection<Ejecuciones> Ejecuciones;
-        public VentanaSecundaria(Ejercicios ejercicioSeleccionado)
+        public ObservableCollection<Ejecuciones> Ejecuciones { get; set; }
+        public VentanaSecundaria(Ejercicios ejercicioSeleccionado, ObservableCollection<Ejecuciones> ejecuciones)
         {
             InitializeComponent();
             TituloVentana(ejercicioSeleccionado.Nombre);
-            DataContext = ejercicioSeleccionado;
-
             // Cargar los datos predeterminados
+            Ejecuciones = ejecuciones;
             EjecucionesDataGrid.ItemsSource = Ejecuciones;
         }
 
@@ -36,56 +35,73 @@ namespace PracticaFinal
             this.Title = $"Detalles del ejercicio: {nombre}";
         }
 
-        public void ActualizarContenido(Ejercicios nuevoEjercicio) 
+        // Funcion utilizada para cambiar entre uno u otro ejercicio seleccionado
+        public void ActualizarContenido(Ejercicios ejercicioSeleccionado, ObservableCollection<Ejecuciones> ejecuciones) 
         { 
-            DataContext = nuevoEjercicio;
-            TituloVentana(nuevoEjercicio.Nombre);
-        }
-        private void CargarEjecuciones(ObservableCollection<Ejecuciones> Ejecuciones)
-        {
-            
+            TituloVentana(ejercicioSeleccionado.Nombre);
+            // Cargar los datos predeterminados
+            Ejecuciones = ejecuciones;
+            EjecucionesDataGrid.ItemsSource = Ejecuciones;
+            EjecucionesDataGrid.Items.Refresh();
         }
 
-        // Método para añadir un ejercicio
+        // Método para añadir
         // PROXIMA CONFIGURACIÓN (BORRAR)
-        private void Añadir_Click(object sender, RoutedEventArgs e)
+        // Método para añadir una nueva ejecución
+        private void AñadirEjecucion_Click(object sender, RoutedEventArgs e)
         {
-            // Para los grupos musculares puedo ahcer que sea un desplegable y que pueda elegir 1 o mas grupos musculares
-            Ejercicios nuevoEjercicio = new Ejercicios { Nombre = "Nuevo Ejercicio", Descripcion = "Descripción...", GruposMusculares = "Grupos..." };
-            ejecuciones.Add(nuevoEjercicio);
+            // Crear una nueva instancia de Ejecuciones
+            Ejecuciones nuevaEjecucion = new Ejecuciones
+            {
+                Repeticiones = 10,
+                Peso = 50,
+                Fecha = DateTime.Today
+            };
+
+            // Añadir la nueva ejecución a la colección
+            Ejecuciones.Add(nuevaEjecucion);
         }
 
-        // Método para modificar el ejercicio seleccionado
-        private void Modificar_Click(object sender, RoutedEventArgs e)
+        // Método para modificar una ejecución seleccionada
+        private void ModificarEjecucion_Click(object sender, RoutedEventArgs e)
         {
-            Ejercicios ejercicioSeleccionado = EjecucionesDataGrid.SelectedItem as Ejercicios;
-            if (ejercicioSeleccionado != null)
+            var ejecucionSeleccionada = EjecucionesDataGrid.SelectedItem as Ejecuciones;
+
+            if (ejecucionSeleccionada != null)
             {
-                // Ejemplo de cambio; en una aplicación real podrías abrir una ventana para editar el ejercicio
-                ejercicioSeleccionado.Nombre = "Ejercicio Modificado";
-                ejercicioSeleccionado.Descripcion = "Descripción modificada";
-                ejercicioSeleccionado.GruposMusculares = "Grupos modificados";
-                EjecucionesDataGrid.Items.Refresh(); // Actualiza el DataGrid
+                // Modificar los valores de la ejecución seleccionada
+                ejecucionSeleccionada.Repeticiones = 15;
+                ejecucionSeleccionada.Peso = 60;
+                ejecucionSeleccionada.Fecha = DateTime.Now.AddDays(1);
+
+                // Refrescar el DataGrid para reflejar los cambios
+                EjecucionesDataGrid.Items.Refresh();
+                MessageBox.Show("Ejecución modificada.");
             }
             else
             {
-                MessageBox.Show("Selecciona un ejercicio para modificar.");
+                MessageBox.Show("Selecciona una ejecución para modificar.");
             }
         }
 
-        // Método para eliminar el ejercicio seleccionado
-        private void Eliminar_Click(object sender, RoutedEventArgs e)
+        // Método para eliminar una ejecución seleccionada
+        private void EliminarEjecucion_Click(object sender, RoutedEventArgs e)
         {
-            Ejercicios ejercicioSeleccionado = EjecucionesDataGrid.SelectedItem as Ejercicios;
-            if (ejercicioSeleccionado != null)
+            var ejecucionSeleccionada = EjecucionesDataGrid.SelectedItem as Ejecuciones;
+
+            if (ejecucionSeleccionada != null)
             {
-                if ((MessageBox.Show("¿Estas seguro de querer eliminar este ejercicio?", "Eliminar", MessageBoxButton.YesNo) == MessageBoxResult.Yes))
-                    ejecuciones.Remove(ejercicioSeleccionado);
+                if (MessageBox.Show("¿Estás seguro de querer eliminar esta ejecución?", "Eliminar", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    Ejecuciones.Remove(ejecucionSeleccionada);
+                    MessageBox.Show("Ejecución eliminada.");
+                }
             }
             else
             {
-                MessageBox.Show("Selecciona un ejercicio para eliminar.");
+                MessageBox.Show("Selecciona una ejecución para eliminar.");
             }
         }
+
     }
 }

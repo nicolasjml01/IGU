@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PracticaFinal;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -30,12 +31,36 @@ namespace PracticaFinal
         public MainWindow()
         {
             InitializeComponent();
-            CargarEjerciciosyEjecuciones();
+            CargarEjercicios();
+            EjerciciosDataGrid.SelectionChanged += AbrirVentanaSecundaria;
 
         }
+        // Método para abrir la ventana secundaria
+        private void AbrirVentanaSecundaria(object sender, SelectionChangedEventArgs e)
+        {
+            // Usamos as para compropbar que selecciionamos un elemento en el datagrid de la clase Ejercicios (aunque en mi caso siempre lo es) (BORRAR)
+            Ejercicios ejercicioSeleccionado = EjerciciosDataGrid.SelectedItem as Ejercicios;
+            if (ejercicioSeleccionado != null)
+            {
+                ejecuciones = EjecucionesEjercicio(ejercicioSeleccionado);
+                if (ventanaSecundaria != null && ventanaSecundaria.IsVisible) 
+                {
+                    // Actualizamos la ventanaSecundaria
+                    ventanaSecundaria.ActualizarContenido(ejercicioSeleccionado, ejecuciones);
+                    ventanaSecundaria.Focus(); // Llevamos la ventana secundaria al frente (BORRAR)
+                }
+            }
+            else
+            {
+                // Creamos una ventana secundaria
+                ventanaSecundaria = new VentanaSecundaria(ejercicioSeleccionado, ejecuciones);
+                ventanaSecundaria.Show();
 
-        // Método para generar una lista de ejercicios prededterminada
-        private void CargarEjerciciosyEjecuciones()
+            }
+        }
+
+        // Método para cargar ejercicios predeterminados
+        private void CargarEjercicios()
         {
             // Inicializar la colección con datos predeterminados
             ejercicios = new ObservableCollection<Ejercicios>
@@ -49,22 +74,31 @@ namespace PracticaFinal
                 new Ejercicios { Nombre = "Press de hombros ", Descripcion = "Un ejercicio para trabajar los hombros utilizando una máquina guiada.", GruposMusculares = "Brazos" },
             };
 
-            ejecuciones = new ObservableCollection<Ejecuciones>
-            {
-                new Ejecuciones { Ejercicio = "Plancha", Repeticiones = 60, Peso = 0, Fecha = new DateTime(2024, 10, 12) },
-                new Ejecuciones { Ejercicio = "Plancha", Repeticiones = 70, Peso = 0, Fecha = new DateTime(2024, 10, 12) },
-                new Ejecuciones { Ejercicio = "Plancha", Repeticiones = 80, Peso = 0, Fecha = new DateTime(2024, 10, 12) },
-                new Ejecuciones { Ejercicio = "Plancha", Repeticiones = 60, Peso = 0, Fecha = new DateTime(2024, 10, 13) },
-                new Ejecuciones { Ejercicio = "Plancha", Repeticiones = 80, Peso = 0, Fecha = new DateTime(2024, 10, 13) },
-                new Ejecuciones { Ejercicio = "Plancha", Repeticiones = 80, Peso = 0, Fecha = new DateTime(2024, 10, 15) },
-                new Ejecuciones { Ejercicio = "Prensa de pierna", Repeticiones = 12, Peso = 100, Fecha = new DateTime(2024, 10, 12) },
-                new Ejecuciones { Ejercicio = "Prensa de pierna", Repeticiones = 15, Peso = 110, Fecha = new DateTime(2024, 10, 12) },
-                new Ejecuciones { Ejercicio = "Prensa de pierna", Repeticiones = 14, Peso = 115, Fecha = new DateTime(2024, 10, 14) },
-                new Ejecuciones { Ejercicio = "Prensa de pierna", Repeticiones = 12, Peso = 120, Fecha = new DateTime(2024, 10, 14) },
-                new Ejecuciones { Ejercicio = "Prensa de pierna", Repeticiones = 15, Peso = 125, Fecha = new DateTime(2024, 10, 16) },
-            };
             // Enlazar datos al datagrid
             EjerciciosDataGrid.ItemsSource = ejercicios;
+        }
+        // Método para generar una lista de ejecuciones de ciertos ejercicios
+        private ObservableCollection<Ejecuciones> EjecucionesEjercicio(Ejercicios ejercicioSeleccionado)
+        {
+            ejecuciones = new ObservableCollection<Ejecuciones>
+            {
+                new Ejecuciones { Nombre = "Plancha", Repeticiones = 60, Peso = 0, Fecha = new DateTime(2024, 10, 12) },
+                new Ejecuciones { Nombre = "Plancha", Repeticiones = 70, Peso = 0, Fecha = new DateTime(2024, 10, 12) },
+                new Ejecuciones { Nombre = "Plancha", Repeticiones = 80, Peso = 0, Fecha = new DateTime(2024, 10, 12) },
+                new Ejecuciones { Nombre = "Plancha", Repeticiones = 60, Peso = 0, Fecha = new DateTime(2024, 10, 13) },
+                new Ejecuciones { Nombre = "Plancha", Repeticiones = 80, Peso = 0, Fecha = new DateTime(2024, 10, 13) },
+                new Ejecuciones { Nombre = "Plancha", Repeticiones = 80, Peso = 0, Fecha = new DateTime(2024, 10, 15) },
+                new Ejecuciones { Nombre = "Prensa de pierna", Repeticiones = 12, Peso = 100, Fecha = new DateTime(2024, 10, 12) },
+                new Ejecuciones { Nombre = "Prensa de pierna", Repeticiones = 15, Peso = 110, Fecha = new DateTime(2024, 10, 12) },
+                new Ejecuciones { Nombre = "Prensa de pierna", Repeticiones = 14, Peso = 115, Fecha = new DateTime(2024, 10, 14) },
+                new Ejecuciones { Nombre = "Prensa de pierna", Repeticiones = 12, Peso = 120, Fecha = new DateTime(2024, 10, 14) },
+                new Ejecuciones { Nombre = "Prensa de pierna", Repeticiones = 15, Peso = 125, Fecha = new DateTime(2024, 10, 16) },
+            };
+            // Filtrar las ejecuciones que corresponden al ejercicio seleccionado
+            var ejecucionesFiltradas = new ObservableCollection<Ejecuciones>(
+                ejecuciones.Where(e => e.Nombre == ejercicioSeleccionado.Nombre));
+
+            return ejecucionesFiltradas;
         }
 
         // Método para añadir un ejercicio
@@ -108,26 +142,6 @@ namespace PracticaFinal
                 MessageBox.Show("Selecciona un ejercicio para eliminar.");
             }
         }
-
-        // Método para abrir la ventana secundaria
-        private void AbrirVentanaSecundaria(object sender, SelectionChangedEventArgs e) 
-        {
-            // Usamos as para compropbar que selecciionamos un elemento en el datagrid de la clase Ejercicios (aunque en mi caso siempre lo es) (BORRAR)
-            Ejercicios ejercicioSeleccionado = EjerciciosDataGrid.SelectedItem as Ejercicios;
-            if (ejercicioSeleccionado != null && ventanaSecundaria!= null && ventanaSecundaria.IsVisible) 
-            {
-                // Actualizamos la ventanaSecundaria
-                ventanaSecundaria.ActualizarContenido(ejercicioSeleccionado);
-                ventanaSecundaria.Focus(); // Llevamos la ventana secundaria al frente (BORRAR)
-            }
-            else
-            {
-                // Creamos una ventana secundaria
-                ventanaSecundaria = new VentanaSecundaria(ejercicioSeleccionado);
-                ventanaSecundaria.Show();
-
-            }
-        }
-
+            
     }
 }
