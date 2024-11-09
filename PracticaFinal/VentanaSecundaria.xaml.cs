@@ -25,8 +25,11 @@ namespace PracticaFinal
         {
             InitializeComponent();
             TituloVentana(ejercicioSeleccionado.Nombre);
-            // Cargar los datos predeterminados
-            Ejecuciones = ejecuciones;
+            // Filtrar las ejecuciones según el ejercicio seleccionado
+            Ejecuciones = new ObservableCollection<Ejecuciones>(
+                ejecuciones.Where(e => e.Nombre == ejercicioSeleccionado.Nombre)
+            );
+            // Asignar la lista filtrada al DataGrid
             EjecucionesDataGrid.ItemsSource = Ejecuciones;
         }
 
@@ -39,8 +42,11 @@ namespace PracticaFinal
         public void ActualizarContenido(Ejercicios ejercicioSeleccionado, ObservableCollection<Ejecuciones> ejecuciones) 
         { 
             TituloVentana(ejercicioSeleccionado.Nombre);
-            // Cargar los datos predeterminados
-            Ejecuciones = ejecuciones;
+            // Filtrar y actualizar las ejecuciones por nombre del ejercicio seleccionado
+            Ejecuciones = new ObservableCollection<Ejecuciones>(
+                ejecuciones.Where(e => e.Nombre == ejercicioSeleccionado.Nombre)
+            );
+
             EjecucionesDataGrid.ItemsSource = Ejecuciones;
             EjecucionesDataGrid.Items.Refresh();
         }

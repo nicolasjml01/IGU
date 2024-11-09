@@ -40,22 +40,25 @@ namespace PracticaFinal
         {
             // Usamos as para compropbar que selecciionamos un elemento en el datagrid de la clase Ejercicios (aunque en mi caso siempre lo es) (BORRAR)
             Ejercicios ejercicioSeleccionado = EjerciciosDataGrid.SelectedItem as Ejercicios;
+            
             if (ejercicioSeleccionado != null)
             {
+                // Generar las ejecuciones relacionadas con el ejercicio seleccionado
                 ejecuciones = EjecucionesEjercicio(ejercicioSeleccionado);
-                if (ventanaSecundaria != null && ventanaSecundaria.IsVisible) 
-                {
-                    // Actualizamos la ventanaSecundaria
-                    ventanaSecundaria.ActualizarContenido(ejercicioSeleccionado, ejecuciones);
-                    ventanaSecundaria.Focus(); // Llevamos la ventana secundaria al frente (BORRAR)
-                }
-            }
-            else
-            {
-                // Creamos una ventana secundaria
-                ventanaSecundaria = new VentanaSecundaria(ejercicioSeleccionado, ejecuciones);
-                ventanaSecundaria.Show();
 
+                // Verificamos si la ventana secundaria ya está abierta
+                if (ventanaSecundaria != null && ventanaSecundaria.IsVisible)
+                {
+                    // Si la ventana secundaria ya está abierta, actualizamos su contenido
+                    ventanaSecundaria.ActualizarContenido(ejercicioSeleccionado, ejecuciones);
+                    ventanaSecundaria.Focus(); // Llevamos la ventana secundaria al frente
+                }
+                else
+                {
+                    // Si la ventana secundaria no está abierta, la creamos y mostramos
+                    ventanaSecundaria = new VentanaSecundaria(ejercicioSeleccionado, ejecuciones);
+                    ventanaSecundaria.Show();
+                }
             }
         }
 
@@ -96,7 +99,8 @@ namespace PracticaFinal
             };
             // Filtrar las ejecuciones que corresponden al ejercicio seleccionado
             var ejecucionesFiltradas = new ObservableCollection<Ejecuciones>(
-                ejecuciones.Where(e => e.Nombre == ejercicioSeleccionado.Nombre));
+                // Funciona como un for, obtiene la lista de las ejecuciones del ejercicio seleccionado (BORRAR)
+                ejecuciones.Where(ejecucion => ejecucion.Nombre == ejercicioSeleccionado.Nombre));
 
             return ejecucionesFiltradas;
         }
