@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace PracticaFinal
 {
     // Clase utilizada para almacenar la informacion de cada ejercicio
-    internal class Ejercicios
+    public class Ejercicios
     {
         public string Nombre { get; set; }
         public string Descripcion { get; set; }

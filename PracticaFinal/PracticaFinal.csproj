@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Ejecuciones.cs" />
     <Compile Include="Ejercicios.cs" />
     <Compile Include="VentanaSecundaria.xaml.cs">
       <DependentUpon>VentanaSecundaria.xaml</DependentUpon>

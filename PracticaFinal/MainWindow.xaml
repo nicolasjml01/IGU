@@ -11,7 +11,8 @@
         <TabItem Header="Ejercicios">
             <Grid>
                 <DataGrid x:Name="EjerciciosDataGrid" AutoGenerateColumns="False" IsReadOnly="True" 
-                                    Margin="5,5,5,5" SelectionMode="Single" SelectionUnit="FullRow">
+                                    Margin="5,5,5,5" SelectionMode="Single" SelectionUnit="FullRow"
+                                    SelectionChanged="AbrirVentanaSecundaria">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="150"/>
                         <DataGridTextColumn Header="Descripción" Binding="{Binding Descripcion}" Width="*"/>
