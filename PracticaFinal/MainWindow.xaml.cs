@@ -99,9 +99,9 @@ namespace PracticaFinal
             };
             // Filtrar las ejecuciones que corresponden al ejercicio seleccionado
             var ejecucionesFiltradas = new ObservableCollection<Ejecuciones>(
-                // Funciona como un for, obtiene la lista de las ejecuciones del ejercicio seleccionado (BORRAR)
                 ejecuciones.Where(ejecucion => ejecucion.Nombre == ejercicioSeleccionado.Nombre));
-
+            // Funciona como un for, obtiene la lista de las ejecuciones del ejercicio seleccionado (BORRAR)
+            // ejecucionesFiltradas convierte la lsita del where en una ObservableCollection (BORRAR)
             return ejecucionesFiltradas;
         }
 

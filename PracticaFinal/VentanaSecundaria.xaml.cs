@@ -56,37 +56,40 @@ namespace PracticaFinal
         // Método para añadir una nueva ejecución
         private void AñadirEjecucion_Click(object sender, RoutedEventArgs e)
         {
-            // Crear una nueva instancia de Ejecuciones
-            Ejecuciones nuevaEjecucion = new Ejecuciones
-            {
-                Repeticiones = 10,
-                Peso = 50,
-                Fecha = DateTime.Today
-            };
+            // Crear una nueva instancia de VentanaFormularioEjecuciones en modo "añadir"
+            var ventanaFormulario = new VentanaFormularioEjecuciones(this.Title.Replace("Detalles del ejercicio: ", ""));
 
-            // Añadir la nueva ejecución a la colección
-            Ejecuciones.Add(nuevaEjecucion);
+            // Mostrar la ventana y comprobar si el usuario confirmó la acción
+            if (ventanaFormulario.ShowDialog() == true)
+            {
+                // Acceder a la ejecución creada a través de la propiedad EjecucionFormulario
+                Ejecuciones nuevaEjecucion = ventanaFormulario.EjecucionFormulario;
+
+                // Agregar la nueva ejecución a la colección observable
+                Ejecuciones.Add(nuevaEjecucion);
+            }
         }
 
         // Método para modificar una ejecución seleccionada
         private void ModificarEjecucion_Click(object sender, RoutedEventArgs e)
         {
+            // Obtener la ejecución seleccionada del DataGrid
             var ejecucionSeleccionada = EjecucionesDataGrid.SelectedItem as Ejecuciones;
 
-            if (ejecucionSeleccionada != null)
+            if (ejecucionSeleccionada == null)
             {
-                // Modificar los valores de la ejecución seleccionada
-                ejecucionSeleccionada.Repeticiones = 15;
-                ejecucionSeleccionada.Peso = 60;
-                ejecucionSeleccionada.Fecha = DateTime.Now.AddDays(1);
-
-                // Refrescar el DataGrid para reflejar los cambios
-                EjecucionesDataGrid.Items.Refresh();
-                MessageBox.Show("Ejecución modificada.");
+                MessageBox.Show("Selecciona una ejecución para modificar.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
-            else
+
+            // Crear una nueva instancia de VentanaFormularioEjecuciones en modo "modificar"
+            var ventanaFormulario = new VentanaFormularioEjecuciones(ejecucionSeleccionada);
+
+            // Mostrar la ventana y comprobar si el usuario confirmó la acción
+            if (ventanaFormulario.ShowDialog() == true)
             {
-                MessageBox.Show("Selecciona una ejecución para modificar.");
+                // Los cambios ya estarán reflejados en ejecucionSeleccionada
+                EjecucionesDataGrid.Items.Refresh(); // Refrescar el DataGrid para ver los cambios
             }
         }
 
