@@ -1,19 +1,7 @@
-﻿using PracticaFinal;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PracticaFinal
 {
@@ -25,27 +13,26 @@ namespace PracticaFinal
         // Colección de ejercicios
         // MEJOR PORQUE DEJA MODIFICARLA (BORRAR)
         private ObservableCollection<Ejercicios> ejercicios;
-        private ObservableCollection<Ejecuciones> ejecuciones;
+        public ObservableCollection<Ejecuciones> ejecuciones { get; set; }
         private VentanaSecundaria ventanaSecundaria;
 
         public MainWindow()
         {
             InitializeComponent();
             CargarEjercicios();
+            CargarEjecuciones();
             EjerciciosDataGrid.SelectionChanged += AbrirVentanaSecundaria;
 
         }
+
         // Método para abrir la ventana secundaria
         private void AbrirVentanaSecundaria(object sender, SelectionChangedEventArgs e)
         {
-            // Usamos as para compropbar que selecciionamos un elemento en el datagrid de la clase Ejercicios (aunque en mi caso siempre lo es) (BORRAR)
+            // Usamos as para compropbar que seleccionamos un elemento en el datagrid de la clase Ejercicios (aunque en mi caso siempre lo es) (BORRAR)
             Ejercicios ejercicioSeleccionado = EjerciciosDataGrid.SelectedItem as Ejercicios;
             
             if (ejercicioSeleccionado != null)
             {
-                // Generar las ejecuciones relacionadas con el ejercicio seleccionado
-                ejecuciones = EjecucionesEjercicio(ejercicioSeleccionado);
-
                 // Verificamos si la ventana secundaria ya está abierta
                 if (ventanaSecundaria != null && ventanaSecundaria.IsVisible)
                 {
@@ -81,28 +68,22 @@ namespace PracticaFinal
             EjerciciosDataGrid.ItemsSource = ejercicios;
         }
         // Método para generar una lista de ejecuciones de ciertos ejercicios
-        private ObservableCollection<Ejecuciones> EjecucionesEjercicio(Ejercicios ejercicioSeleccionado)
+        private void CargarEjecuciones()
         {
             ejecuciones = new ObservableCollection<Ejecuciones>
             {
-                new Ejecuciones { Nombre = "Plancha", Repeticiones = 60, Peso = 0, Fecha = new DateTime(2024, 10, 12) },
-                new Ejecuciones { Nombre = "Plancha", Repeticiones = 70, Peso = 0, Fecha = new DateTime(2024, 10, 12) },
-                new Ejecuciones { Nombre = "Plancha", Repeticiones = 80, Peso = 0, Fecha = new DateTime(2024, 10, 12) },
-                new Ejecuciones { Nombre = "Plancha", Repeticiones = 60, Peso = 0, Fecha = new DateTime(2024, 10, 13) },
-                new Ejecuciones { Nombre = "Plancha", Repeticiones = 80, Peso = 0, Fecha = new DateTime(2024, 10, 13) },
-                new Ejecuciones { Nombre = "Plancha", Repeticiones = 80, Peso = 0, Fecha = new DateTime(2024, 10, 15) },
-                new Ejecuciones { Nombre = "Prensa de pierna", Repeticiones = 12, Peso = 100, Fecha = new DateTime(2024, 10, 12) },
-                new Ejecuciones { Nombre = "Prensa de pierna", Repeticiones = 15, Peso = 110, Fecha = new DateTime(2024, 10, 12) },
-                new Ejecuciones { Nombre = "Prensa de pierna", Repeticiones = 14, Peso = 115, Fecha = new DateTime(2024, 10, 14) },
-                new Ejecuciones { Nombre = "Prensa de pierna", Repeticiones = 12, Peso = 120, Fecha = new DateTime(2024, 10, 14) },
-                new Ejecuciones { Nombre = "Prensa de pierna", Repeticiones = 15, Peso = 125, Fecha = new DateTime(2024, 10, 16) },
+                new Ejecuciones { Nombre = "Plancha", Repeticiones = 60, Peso = 0, FechayHora = new DateTime(2024, 10, 12, 12, 0, 0) },
+                new Ejecuciones { Nombre = "Plancha", Repeticiones = 70, Peso = 0, FechayHora = new DateTime(2024, 10, 12, 12, 0, 0) },
+                new Ejecuciones { Nombre = "Plancha", Repeticiones = 80, Peso = 0, FechayHora = new DateTime(2024, 10, 12, 12, 0, 0) },
+                new Ejecuciones { Nombre = "Plancha", Repeticiones = 60, Peso = 0, FechayHora = new DateTime(2024, 10, 13, 12, 0, 0) },
+                new Ejecuciones { Nombre = "Plancha", Repeticiones = 80, Peso = 0, FechayHora = new DateTime(2024, 10, 13, 12, 0, 0) },
+                new Ejecuciones { Nombre = "Plancha", Repeticiones = 80, Peso = 0, FechayHora = new DateTime(2024, 10, 15, 12, 0, 0) },
+                new Ejecuciones { Nombre = "Prensa de pierna", Repeticiones = 12, Peso = 100, FechayHora = new DateTime(2024, 10, 12, 12, 0, 0) },
+                new Ejecuciones { Nombre = "Prensa de pierna", Repeticiones = 15, Peso = 110, FechayHora = new DateTime(2024, 10, 12, 12, 0, 0) },
+                new Ejecuciones { Nombre = "Prensa de pierna", Repeticiones = 14, Peso = 115, FechayHora = new DateTime(2024, 10, 14, 12, 0, 0) },
+                new Ejecuciones { Nombre = "Prensa de pierna", Repeticiones = 12, Peso = 120, FechayHora = new DateTime(2024, 10, 14, 12, 0, 0) },
+                new Ejecuciones { Nombre = "Prensa de pierna", Repeticiones = 15, Peso = 125, FechayHora = new DateTime(2024, 10, 16, 12, 0, 0) },
             };
-            // Filtrar las ejecuciones que corresponden al ejercicio seleccionado
-            var ejecucionesFiltradas = new ObservableCollection<Ejecuciones>(
-                ejecuciones.Where(ejecucion => ejecucion.Nombre == ejercicioSeleccionado.Nombre));
-            // Funciona como un for, obtiene la lista de las ejecuciones del ejercicio seleccionado (BORRAR)
-            // ejecucionesFiltradas convierte la lsita del where en una ObservableCollection (BORRAR)
-            return ejecucionesFiltradas;
         }
 
         // Método para añadir un ejercicio

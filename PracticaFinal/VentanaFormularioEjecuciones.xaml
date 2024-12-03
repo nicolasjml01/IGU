@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PracticaFinal"
         mc:Ignorable="d"
-        Height="250" Width="300">
+        Height="270" Width="300">
     <Grid Margin="10">
         <StackPanel>
             <Label>Repeticiones:</Label>
@@ -14,8 +14,10 @@
             <TextBox x:Name="PesoTextBox" />
             <Label>Fecha:</Label>
             <DatePicker x:Name="FechaPicker" />
+            <Label>Hora (HH:mm):</Label>
+            <TextBox x:Name="HoraTextBox" />
             
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
                 <Button Content="Aceptar" Width="75" Margin="5" Click="Aceptar_Click" />
                 <Button Content="Cancelar" Width="75" Margin="5" Click="Cancelar_Click" />
             </StackPanel>

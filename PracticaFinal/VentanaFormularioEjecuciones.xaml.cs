@@ -1,16 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PracticaFinal
 {
@@ -19,30 +8,15 @@ namespace PracticaFinal
     /// </summary>
     public partial class VentanaFormularioEjecuciones : Window
     {
-        public Ejecuciones EjecucionFormulario { get; set; }
-        private bool modificacion;
+        public Ejecuciones NuevaEjecucion { get; set; }
+        private string nombreEjercicio;
 
         // Constructor para añadir una nueva ejecución
         public VentanaFormularioEjecuciones(string nombreEjercicio)
         {
             this.Title = $"Añadir Ejecucion";
             InitializeComponent();
-            modificacion = false;
-            EjecucionFormulario = new Ejecuciones { Nombre = nombreEjercicio };
-        }
-
-        // Constructor para modificar una ejecución existente
-        public VentanaFormularioEjecuciones(Ejecuciones ejecucionExistente)
-        {
-            this.Title = $"Modificar Ejecucion";
-            InitializeComponent();
-            modificacion = true;
-            EjecucionFormulario = ejecucionExistente;
-
-            // Cargar los valores existentes en los campos de texto
-            RepeticionesTextBox.Text = EjecucionFormulario.Repeticiones.ToString();
-            PesoTextBox.Text = EjecucionFormulario.Peso.ToString();
-            FechaPicker.SelectedDate = EjecucionFormulario.Fecha;
+            this.nombreEjercicio = nombreEjercicio;
         }
 
         private void Aceptar_Click(object sender, RoutedEventArgs e)
@@ -50,7 +24,8 @@ namespace PracticaFinal
             // Validar que se hayan ingresado todos los campos
             if (string.IsNullOrWhiteSpace(RepeticionesTextBox.Text) ||
                 string.IsNullOrWhiteSpace(PesoTextBox.Text) ||
-                !FechaPicker.SelectedDate.HasValue)
+                !FechaPicker.SelectedDate.HasValue ||
+                string.IsNullOrWhiteSpace(HoraTextBox.Text))
             {
                 MessageBox.Show("Por favor, completa todos los campos.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -64,12 +39,25 @@ namespace PracticaFinal
                 return;
             }
 
-            // Asignar los valores ingresados a la ejecución
-            EjecucionFormulario.Repeticiones = repeticiones;
-            EjecucionFormulario.Peso = peso;
-            EjecucionFormulario.Fecha = FechaPicker.SelectedDate.Value;
+            // Validar que la hora sea válida
+            if (!TimeSpan.TryParse(HoraTextBox.Text, out TimeSpan hora))
+            {
+                MessageBox.Show("La hora debe estar en un formato válido (HH:mm).", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-            DialogResult = true; // Indicar que el formulario se cerrará con éxito
+            // Crear una nueva instancia de Ejecuciones con los datos ingresados
+            NuevaEjecucion = new Ejecuciones
+            {
+                Nombre = nombreEjercicio,
+                // Asignar los valores ingresados a la ejecución
+                Repeticiones = repeticiones,
+                Peso = peso,
+                FechayHora = FechaPicker.SelectedDate.Value
+            };
+
+            // Confirmar la acción
+            DialogResult = true;
             Close();
         }
 

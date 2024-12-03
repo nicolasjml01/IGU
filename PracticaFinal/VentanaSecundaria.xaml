@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:PracticaFinal"
         mc:Ignorable="d"
         Height="450" Width="800">
-        <!--Añadir el tipo de ejercicio seleccionado-->
     <TabControl>
         <!--Ventana Ejecuciones-->
         <TabItem Header="Ejecuciones">
@@ -16,20 +15,21 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Repeticiones" Binding="{Binding Repeticiones}" Width="100"/>
                         <DataGridTextColumn Header="Peso" Binding="{Binding Peso}" Width="100"/>
-                        <DataGridTextColumn Header="Fecha" Binding="{Binding Fecha}" Width="200"/>
+                        <DataGridTextColumn Header="Fecha y Hora" Binding="{Binding FechayHora, StringFormat='dd/MM/yyyy HH:mm'}" Width="200"/>
                     </DataGrid.Columns>
                 </DataGrid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
                                       VerticalAlignment="Bottom" Margin="10">
                     <Button Content="Añadir" Width="75" Margin="5" Click="AñadirEjecucion_Click"/>
-                    <Button Content="Modificar" Width="75" Margin="5" Click="ModificarEjecucion_Click"/>
                     <Button Content="Eliminar" Width="75" Margin="5" Click="EliminarEjecucion_Click"/>
                 </StackPanel>
             </Grid>
         </TabItem>
         <!-- Pestaña Daily Insigth-->
         <TabItem Header="Gráfico">
-
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <Canvas x:Name="GraficoCanvas" Margin="10" Width="800" Height="400" Background="White"/>
+            </ScrollViewer>
         </TabItem>
     </TabControl>
 </Window>
