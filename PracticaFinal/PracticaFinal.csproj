@@ -60,6 +60,9 @@
     <Compile Include="VentanaFormularioEjecuciones.xaml.cs">
       <DependentUpon>VentanaFormularioEjecuciones.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VentanaFormularioEjercicios.xaml.cs">
+      <DependentUpon>VentanaFormularioEjercicios.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VentanaSecundaria.xaml.cs">
       <DependentUpon>VentanaSecundaria.xaml</DependentUpon>
     </Compile>
@@ -76,6 +79,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="VentanaFormularioEjecuciones.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VentanaFormularioEjercicios.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

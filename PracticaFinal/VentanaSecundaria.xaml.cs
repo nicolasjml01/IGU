@@ -44,6 +44,29 @@ namespace PracticaFinal
             {
                 DibujarGrafico();
             }
+            // Seleccionamos la fecha de la ejecucion seleccionada
+            EjecucionesDataGrid.SelectionChanged += CargarDatosFecha;
+        }
+        // Seleccion de fecha en ventana secundaria
+        private void CargarDatosFecha(object sender, SelectionChangedEventArgs e)
+        {
+            // Obtenemos el objeto seleccionado del DataGrid
+            Ejecuciones ejecucionSeleccionada = EjecucionesDataGrid.SelectedItem as Ejecuciones;
+
+            // Validamos que no sea nulo
+            if (ejecucionSeleccionada != null) 
+            {
+                // Cogemos solo la fecha
+                DateTime fecha = ejecucionSeleccionada.FechayHora.Date;
+
+                // Llamamos a la ventana principal para pasar la fecha seleccionada
+                MainWindow ventanaPrincipal = Application.Current.MainWindow as MainWindow;
+
+                if (ventanaPrincipal != null)
+                {
+                    ventanaPrincipal.ActualizarFechaDesdeVentanaSecundaria(fecha);
+                }
+            }
         }
 
         private void TituloVentana(string nombre)
@@ -73,8 +96,6 @@ namespace PracticaFinal
             }
         }
 
-        // Método para añadir
-        // PROXIMA CONFIGURACIÓN (BORRAR)
         // Método para añadir una nueva ejecución
         private void AñadirEjecucion_Click(object sender, RoutedEventArgs e)
         {
@@ -99,6 +120,9 @@ namespace PracticaFinal
                     DibujarGrafico();
                 }
 
+                // Recargar los datos para la fecha de la nueva ejecución
+                CargarDatosFechaAñadidaEliminar(nuevaEjecucion.FechayHora.Date);
+
                 MessageBox.Show("Ejecución añadida correctamente.");
             }
             else MessageBox.Show("ERROR, no se añadio ninguna ejecucion");
@@ -114,11 +138,16 @@ namespace PracticaFinal
                 if (MessageBox.Show("¿Estás seguro de querer eliminar esta ejecución?", "Eliminar", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     ejecucionesFiltradas.Remove(ejecucionSeleccionada);
-                    // Añadir la nueva ejecución a la lista general de ejecuciones
                     ejecuciones.Remove(ejecucionSeleccionada);
-                    // Dibujar el gráfico
-                    //GraficoCanvas.SizeChanged += GraficoCanvas_SizeChanged;
 
+                    // Si el Canvas ya tiene dimensiones válidas, dibuja el gráfico
+                    if (GraficoCanvas.ActualWidth > 0 && GraficoCanvas.ActualHeight > 0)
+                    {
+                        DibujarGrafico();
+                    }
+
+                    // Recargar los datos para la fecha de la ejecución eliminada
+                    CargarDatosFechaAñadidaEliminar(ejecucionSeleccionada.FechayHora.Date);
                     MessageBox.Show("Ejecución eliminada.");
                 }
             }
@@ -128,6 +157,19 @@ namespace PracticaFinal
             }
         }
 
+        // Recalcular la ventana Daily Insigth con la fecha añadida o eliminada
+        private void CargarDatosFechaAñadidaEliminar(DateTime fecha)
+        {
+            MainWindow ventanaPrincipal = Application.Current.MainWindow as MainWindow;
+
+            if (ventanaPrincipal != null)
+            {
+                // Pasar la fecha a la ventana principal
+                ventanaPrincipal.ActualizarFechaDesdeVentanaSecundaria(fecha);
+            }
+        }
+
+        // Actualizacion del tamaño
         private void GraficoCanvas_TamañoCambiado(object sender, SizeChangedEventArgs e)
         {
             DibujarGrafico();

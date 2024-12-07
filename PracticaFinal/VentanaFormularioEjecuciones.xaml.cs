@@ -39,12 +39,22 @@ namespace PracticaFinal
                 return;
             }
 
-            // Validar que la hora sea válida
-            if (!TimeSpan.TryParse(HoraTextBox.Text, out TimeSpan hora))
+            // Ajustar la hora si damos horas exactas
+            string horaInput = HoraTextBox.Text.Trim();
+            if (!horaInput.Contains(":"))
+            {
+                horaInput += ":00";
+            }
+
+            // Validar que la hora sea un formato válido
+            if (!TimeSpan.TryParse(horaInput, out TimeSpan hora))
             {
                 MessageBox.Show("La hora debe estar en un formato válido (HH:mm).", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+
+            // Combinar la fecha seleccionada con la hora ingresada
+            DateTime fechaCompleta = FechaPicker.SelectedDate.Value.Date.Add(hora);
 
             // Crear una nueva instancia de Ejecuciones con los datos ingresados
             NuevaEjecucion = new Ejecuciones
@@ -53,7 +63,7 @@ namespace PracticaFinal
                 // Asignar los valores ingresados a la ejecución
                 Repeticiones = repeticiones,
                 Peso = peso,
-                FechayHora = FechaPicker.SelectedDate.Value
+                FechayHora = fechaCompleta
             };
 
             // Confirmar la acción

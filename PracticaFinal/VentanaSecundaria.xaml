@@ -11,15 +11,17 @@
         <TabItem Header="Ejecuciones">
             <Grid>
                 <DataGrid x:Name="EjecucionesDataGrid" AutoGenerateColumns="False" IsReadOnly="True" 
-                        Margin="5,5,5,5" SelectionMode="Single" SelectionUnit="FullRow">
+                  Margin="5,5,5,5" SelectionMode="Single" SelectionUnit="FullRow"
+                  SelectionChanged="CargarDatosFecha">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Repeticiones" Binding="{Binding Repeticiones}" Width="100"/>
-                        <DataGridTextColumn Header="Peso" Binding="{Binding Peso}" Width="100"/>
-                        <DataGridTextColumn Header="Fecha y Hora" Binding="{Binding FechayHora, StringFormat='dd/MM/yyyy HH:mm'}" Width="200"/>
+                        <DataGridTextColumn Header="Repeticiones" Binding="{Binding Repeticiones}" Width="*" />
+                        <DataGridTextColumn Header="Peso" Binding="{Binding Peso}" Width="*" />
+                        <DataGridTextColumn Header="Fecha y Hora" Binding="{Binding FechayHora, StringFormat='dd/MM/yyyy HH:mm'}" Width="2*" />
                     </DataGrid.Columns>
                 </DataGrid>
+
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
-                                      VerticalAlignment="Bottom" Margin="10">
+                    VerticalAlignment="Bottom" Margin="10">
                     <Button Content="Añadir" Width="75" Margin="5" Click="AñadirEjecucion_Click"/>
                     <Button Content="Eliminar" Width="75" Margin="5" Click="EliminarEjecucion_Click"/>
                 </StackPanel>
