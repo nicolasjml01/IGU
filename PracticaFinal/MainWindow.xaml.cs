@@ -28,8 +28,10 @@ namespace PracticaFinal
             InitializeComponent();
             CargarEjercicios();
             CargarEjecuciones();
+
             // Ventana Daily Insigth
             VenatanaDailyInsigthNeutro();
+
             // Ventana Secundaria
             EjerciciosDataGrid.SelectionChanged += AbrirVentanaSecundaria;
 
@@ -38,7 +40,7 @@ namespace PracticaFinal
         // Método para abrir la ventana secundaria
         private void AbrirVentanaSecundaria(object sender, SelectionChangedEventArgs e)
         {
-            // Usamos as para compropbar que seleccionamos un elemento en el datagrid de la clase Ejercicios (aunque en mi caso siempre lo es) (BORRAR)
+            // Usamos as para compropbar que seleccionamos un elemento en el datagrid de la clase Ejercicios
             Ejercicios ejercicioSeleccionado = EjerciciosDataGrid.SelectedItem as Ejercicios;
 
             if (ejercicioSeleccionado != null)
@@ -74,9 +76,26 @@ namespace PracticaFinal
                 new Ejercicios { Nombre = "Press de hombros", Descripcion = "Un ejercicio para trabajar los hombros utilizando una máquina guiada.", GruposMusculares = "Brazos" },
             };
 
-            // Enlazar datos al datagrid
+            // Suscribirse al evento NombreCambiado para actualizar las ejecuciones
+            foreach (var ejercicio in ejercicios)
+            {
+                ejercicio.NombreCambiado += ActualizarNombreEjecuciones;
+            }
             EjerciciosDataGrid.ItemsSource = ejercicios;
         }
+
+        // Actualiza el nombre de las ejecuciones si se produce un cambio de nombre en los ejercicios
+        private void ActualizarNombreEjecuciones(string nombreAnterior, string nombreNuevo)
+        {
+            foreach (var ejecucion in ejecuciones)
+            {
+                if (ejecucion.Nombre == nombreAnterior)
+                {
+                    ejecucion.Nombre = nombreNuevo;
+                }
+            }
+        }
+
         // Método para generar una lista de ejecuciones de ciertos ejercicios
         private void CargarEjecuciones()
         {
@@ -94,41 +113,17 @@ namespace PracticaFinal
                 new Ejecuciones { Nombre = "Prensa de pierna", Repeticiones = 14, Peso = 115, FechayHora = new DateTime(2024, 10, 14, 12, 0, 0) },
                 new Ejecuciones { Nombre = "Prensa de pierna", Repeticiones = 12, Peso = 120, FechayHora = new DateTime(2024, 10, 14, 12, 0, 0) },
                 new Ejecuciones { Nombre = "Prensa de pierna", Repeticiones = 15, Peso = 125, FechayHora = new DateTime(2024, 10, 16, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Curl de Bíceps", Repeticiones = 12, Peso = 100, FechayHora = new DateTime(2024, 10, 12, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Curl de Bíceps", Repeticiones = 15, Peso = 110, FechayHora = new DateTime(2024, 10, 12, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Curl de Bíceps", Repeticiones = 14, Peso = 115, FechayHora = new DateTime(2024, 10, 14, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Curl de Bíceps", Repeticiones = 12, Peso = 120, FechayHora = new DateTime(2024, 10, 14, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Curl de Bíceps", Repeticiones = 15, Peso = 125, FechayHora = new DateTime(2024, 10, 16, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Press de hombros", Repeticiones = 12, Peso = 100, FechayHora = new DateTime(2024, 10, 12, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Press de hombros", Repeticiones = 15, Peso = 110, FechayHora = new DateTime(2024, 10, 12, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Press de hombros", Repeticiones = 14, Peso = 115, FechayHora = new DateTime(2024, 10, 14, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Press de hombros", Repeticiones = 12, Peso = 120, FechayHora = new DateTime(2024, 10, 14, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Press de hombros", Repeticiones = 15, Peso = 125, FechayHora = new DateTime(2024, 10, 16, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Press de banca", Repeticiones = 12, Peso = 100, FechayHora = new DateTime(2024, 10, 12, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Press de banca", Repeticiones = 15, Peso = 110, FechayHora = new DateTime(2024, 10, 12, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Press de banca", Repeticiones = 14, Peso = 115, FechayHora = new DateTime(2024, 10, 14, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Press de banca", Repeticiones = 12, Peso = 120, FechayHora = new DateTime(2024, 10, 14, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Press de banca", Repeticiones = 15, Peso = 125, FechayHora = new DateTime(2024, 10, 16, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Jalón al pecho", Repeticiones = 12, Peso = 100, FechayHora = new DateTime(2024, 10, 12, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Jalón al pecho", Repeticiones = 15, Peso = 110, FechayHora = new DateTime(2024, 10, 12, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Jalón al pecho", Repeticiones = 14, Peso = 115, FechayHora = new DateTime(2024, 10, 14, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Jalón al pecho", Repeticiones = 12, Peso = 120, FechayHora = new DateTime(2024, 10, 14, 12, 0, 0) },
-                new Ejecuciones { Nombre = "Jalón al pecho", Repeticiones = 15, Peso = 125, FechayHora = new DateTime(2024, 10, 16, 12, 0, 0) },
-
             };
         }
 
         // Método para añadir un ejercicio
-        // PROXIMA CONFIGURACIÓN (BORRAR)
         private void Añadir_Click(object sender, RoutedEventArgs e)
         {
             // Crear una nueva instancia de VentanaFormularioEjercicios
             var ventanaFormulario = new VentanaFormularioEjercicios();
 
-            // Mostrar la ventana y comprobar si el usuario confirmó la acción
             if (ventanaFormulario.ShowDialog() == true)
             {
-                // Obtener la nueva ejecución del formulario
                 var nuevoEjercicio = ventanaFormulario.nuevoEjercicio;
                 ejercicios.Add(nuevoEjercicio);
 
@@ -143,18 +138,13 @@ namespace PracticaFinal
         // Método para modificar el ejercicio seleccionado
         private void Modificar_Click(object sender, RoutedEventArgs e)
         {
-            // Obtener el ejercicio seleccionado
             Ejercicios ejercicioSeleccionado = EjerciciosDataGrid.SelectedItem as Ejercicios;
 
             if (ejercicioSeleccionado != null)
             {
-                // Abrir la ventana para modificar el ejercicio
                 var ventanaFormulario = new VentanaFormularioEjercicios(ejercicioSeleccionado);
-
-                // Mostrar la ventana y comprobar si el usuario confirmó la acción
                 if (ventanaFormulario.ShowDialog() == true)
                 {
-                    // Aquí puedes realizar alguna acción con el ejercicio modificado, por ejemplo, actualizar la lista
                     MessageBox.Show("Ejecución modificada correctamente.");
                 }
             }
@@ -170,16 +160,23 @@ namespace PracticaFinal
             Ejercicios ejercicioSeleccionado = EjerciciosDataGrid.SelectedItem as Ejercicios;
             if (ejercicioSeleccionado != null)
             {
-                if ((MessageBox.Show("¿Estas seguro de querer eliminar este ejercicio?", "Eliminar", MessageBoxButton.YesNo) == MessageBoxResult.Yes))
+                if ((MessageBox.Show("¿Estas seguro de querer eliminar este ejercicio?", "Eliminar", MessageBoxButton.YesNo) == MessageBoxResult.Yes)) 
+                {
+                    // Eliminar las ejecuciones relacionadas con el nombre del ejercicio
+                    var ejecucionesAEliminar = ejecuciones.Where(ejec => ejec.Nombre == ejercicioSeleccionado.Nombre).ToList();
+
+                    foreach (var ejecucion in ejecucionesAEliminar)
+                    {
+                        ejecuciones.Remove(ejecucion);
+                    }
                     ejercicios.Remove(ejercicioSeleccionado);
+                }
             }
             else
             {
                 MessageBox.Show("Selecciona un ejercicio para eliminar.");
             }
         }
-
-
 
         // Ventana Daily Insigth
         private void VenatanaDailyInsigthNeutro()
@@ -264,25 +261,26 @@ namespace PracticaFinal
         {
             // Ajustamos el ángulo inicial
             double[] angulos = new double[5];
-            double anguloInicio = -Math.PI / 2; // Esto coloca el primer eje hacia arriba (BORRAR)
+            double anguloInicio = -Math.PI / 2; // Colocamos el primer eje apuntando al norte
 
+            // Calculamos los angulos de los ejes
             for (int i = 0; i < 5; i++)
             {
-                angulos[i] = anguloInicio + 2 * Math.PI * i / 5;  // 2π / 5 para dividir el círculo en 5 partes iguales
+                angulos[i] = anguloInicio + 2 * Math.PI * i / 5;
             }
 
-            // Establecemos el centro del gráfico y el radio
+            // Establecemos el centro del gráfico
             double radio = 150;
             double centerX = GraficoCanvas.Width / 2;
             double centerY = GraficoCanvas.Height / 2;
 
-            // Dibujar los ejes en el gráfico
+            // Dibujamos los ejes en el gráfico
             for (int i = 0; i < 5; i++)
             {
                 double x = centerX + radio * Math.Cos(angulos[i]);
                 double y = centerY + radio * Math.Sin(angulos[i]);
 
-                // Dibujamos el eje (línea desde el centro hasta el borde)
+                // Dibujamos el eje
                 Line eje = new Line
                 {
                     X1 = centerX,
@@ -293,7 +291,7 @@ namespace PracticaFinal
                 };
                 GraficoCanvas.Children.Add(eje);
 
-                // Dibujar el nombre del grupo muscular en el borde del gráfico
+                // Dibujamos el nombre del grupo muscular
                 TextBlock nombreGrupo = new TextBlock
                 {
                     Text = contadores.Keys.ElementAt(i),
@@ -310,22 +308,23 @@ namespace PracticaFinal
         private void CargarValoresGrafico(Dictionary<string, int> contadores)
         {
             double[] angulos = new double[5];
-            double anguloInicio = -Math.PI / 2; // Primer eje hacia arriba
+            double anguloInicio = -Math.PI / 2;
+
             for (int i = 0; i < 5; i++)
             {
                 angulos[i] = anguloInicio + 2 * Math.PI * i / 5;
             }
 
-            double radioMax = 150; // Radio del gráfico
+            double radioMax = 150;
             double centerX = GraficoCanvas.Width / 2;
             double centerY = GraficoCanvas.Height / 2;
-
-            PointCollection puntos = new PointCollection(); // Colección para los puntos del polígono
+            // Colección para los puntos del polígono
+            PointCollection puntos = new PointCollection();
             int index = 0;
 
             foreach (var contador in contadores)
             {
-                double valor = Math.Min(contador.Value, 100); // Limitar a 100
+                double valor = Math.Min(contador.Value, 100);
                 double radioActual = (valor / 100.0) * radioMax;
 
                 double xPunto = centerX + radioActual * Math.Cos(angulos[index]);
@@ -348,16 +347,14 @@ namespace PracticaFinal
                 index++;
             }
 
-            // Crear el polígono y rellenarlo con color
+            // Crear el polígono
             Polygon poligono = new Polygon
             {
-                Points = puntos, // Asignar los puntos calculados
-                Stroke = Brushes.Blue, // Color del contorno del polígono
-                StrokeThickness = 2, // Grosor del contorno
-                Fill = new SolidColorBrush(Color.FromArgb(128, 173, 216, 230)) // Azul clarito semitransparente
+                Points = puntos,
+                Stroke = Brushes.Blue,
+                StrokeThickness = 2,
+                Fill = new SolidColorBrush(Color.FromArgb(128, 173, 216, 230)) 
             };
-
-            // Añadir el polígono al Canvas
             GraficoCanvas.Children.Add(poligono);
         }
     }

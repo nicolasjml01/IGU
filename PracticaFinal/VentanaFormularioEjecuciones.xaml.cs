@@ -8,7 +8,7 @@ namespace PracticaFinal
     /// </summary>
     public partial class VentanaFormularioEjecuciones : Window
     {
-        public Ejecuciones NuevaEjecucion { get; set; }
+        public Ejecuciones nuevaEjecucion { get; set; }
         private string nombreEjercicio;
 
         // Constructor para añadir una nueva ejecución
@@ -57,7 +57,7 @@ namespace PracticaFinal
             DateTime fechaCompleta = FechaPicker.SelectedDate.Value.Date.Add(hora);
 
             // Crear una nueva instancia de Ejecuciones con los datos ingresados
-            NuevaEjecucion = new Ejecuciones
+            nuevaEjecucion = new Ejecuciones
             {
                 Nombre = nombreEjercicio,
                 // Asignar los valores ingresados a la ejecución

@@ -35,13 +35,13 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-
-                <!-- StackPanel para seleccionar el día -->
+                
+                <!-- Seleccion del dia -->
                 <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
                     <DatePicker x:Name="FechaInsigth" SelectedDateChanged="FechaInsigth_CambioFecha" />
                 </StackPanel>
-
-                <!-- Canvas preparado para el gráfico -->
+                
+                <!-- Canvas gráfico -->
                 <Canvas x:Name="GraficoCanvas"
                 Grid.Row="1"
                 Background="#E0E0E0"

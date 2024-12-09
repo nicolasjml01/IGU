@@ -28,18 +28,13 @@ namespace PracticaFinal
 
             // Filtrar las ejecuciones relacionadas con el ejercicio seleccionado
             ejecucionesFiltradas = new ObservableCollection<Ejecuciones>(
-                ejecuciones.Where(e => e.Nombre == ejercicioSeleccionado.Nombre)
-            // Funciona como un for, obtiene la lista de las ejecuciones del ejercicio seleccionado (BORRAR)
-            // ejecucionesFiltradas convierte la lsita del where en una ObservableCollection (BORRAR)
-            );
+                ejecuciones.Where(e => e.Nombre == ejercicioSeleccionado.Nombre));
 
             // Asignar la lista filtrada al DataGrid
             EjecucionesDataGrid.ItemsSource = ejecucionesFiltradas;
-
-            // Configurar el título de la ventana
             TituloVentana(ejercicioSeleccionado.Nombre);
 
-            // Si el Canvas ya tiene dimensiones válidas, dibuja el gráfico
+            // Dibujamos el gráfico
             if (GraficoCanvas.ActualWidth > 0 && GraficoCanvas.ActualHeight > 0)
             {
                 DibujarGrafico();
@@ -56,7 +51,6 @@ namespace PracticaFinal
             // Validamos que no sea nulo
             if (ejecucionSeleccionada != null) 
             {
-                // Cogemos solo la fecha
                 DateTime fecha = ejecucionSeleccionada.FechayHora.Date;
 
                 // Llamamos a la ventana principal para pasar la fecha seleccionada
@@ -68,7 +62,6 @@ namespace PracticaFinal
                 }
             }
         }
-
         private void TituloVentana(string nombre)
         {
             this.Title = $"Detalles del ejercicio: {nombre}";
@@ -77,10 +70,7 @@ namespace PracticaFinal
         // Funcion utilizada para cambiar entre uno u otro ejercicio seleccionado
         public void ActualizarContenido(Ejercicios ejercicioSeleccionado, ObservableCollection<Ejecuciones> ejecuciones)
         {
-            // Actualizamos el título de la ventana
             TituloVentana(ejercicioSeleccionado.Nombre);
-
-            // Limpiamos la colección actual
             ejecucionesFiltradas.Clear();
 
             // Filtramos las ejecuciones relacionadas con el ejercicio seleccionado y las agregamos
@@ -89,7 +79,6 @@ namespace PracticaFinal
                 ejecucionesFiltradas.Add(ejecucion);
             }
 
-            // Si el Canvas ya tiene dimensiones válidas, dibuja el gráfico
             if (GraficoCanvas.ActualWidth > 0 && GraficoCanvas.ActualHeight > 0)
             {
                 DibujarGrafico();
@@ -101,20 +90,15 @@ namespace PracticaFinal
         {
             // Crear una nueva instancia de VentanaFormularioEjecuciones
             var ventanaFormulario = new VentanaFormularioEjecuciones(this.Title.Replace("Detalles del ejercicio: ", ""));
-
-            // Mostrar la ventana y comprobar si el usuario confirmó la acción
             if (ventanaFormulario.ShowDialog() == true)
             {
                 // Obtener la nueva ejecución del formulario
-                var nuevaEjecucion = ventanaFormulario.NuevaEjecucion;
+                var nuevaEjecucion = ventanaFormulario.nuevaEjecucion;
 
-                // Añadir la nueva ejecución a la lista filtrada de ejecuciones
+                // Añadir la nueva ejecución a la lista
                 ejecucionesFiltradas.Add(nuevaEjecucion);
-
-                // Añadir la nueva ejecución a la lista general de ejecuciones
                 ejecuciones.Add(nuevaEjecucion);
 
-                // Si el Canvas ya tiene dimensiones válidas, dibuja el gráfico
                 if (GraficoCanvas.ActualWidth > 0 && GraficoCanvas.ActualHeight > 0)
                 {
                     DibujarGrafico();
@@ -157,14 +141,13 @@ namespace PracticaFinal
             }
         }
 
-        // Recalcular la ventana Daily Insigth con la fecha añadida o eliminada
+        // Recalcula la ventana Daily Insigth con la fecha añadida o eliminada
         private void CargarDatosFechaAñadidaEliminar(DateTime fecha)
         {
             MainWindow ventanaPrincipal = Application.Current.MainWindow as MainWindow;
 
             if (ventanaPrincipal != null)
             {
-                // Pasar la fecha a la ventana principal
                 ventanaPrincipal.ActualizarFechaDesdeVentanaSecundaria(fecha);
             }
         }
@@ -210,7 +193,7 @@ namespace PracticaFinal
             DibujarEjes(margen, GraficoCanvas.Width, altoCanvas, maxReps, maxPeso);
 
             // Dibujar barras
-            DibujarBarras(datosOrdenados, margen, GraficoCanvas.Width, altoCanvas, maxReps, maxPeso);
+            DibujarBarrasyLineas(datosOrdenados, margen, GraficoCanvas.Width, altoCanvas, maxReps, maxPeso);
 
             // Dibujar etiquetas del eje X
             DibujarEtiquetasX(datosOrdenados, margen, altoCanvas);
@@ -246,7 +229,7 @@ namespace PracticaFinal
             };
             GraficoCanvas.Children.Add(ejeYReps);
 
-            // Escala y etiquetas para el eje Y izquierdo
+            // Escala y etiquetas para el eje repeticiones
             for (int i = 0; i <= numLineas; i++)
             {
                 double y = altoCanvas - margen - (altoDisponible / numLineas) * i;
@@ -262,7 +245,7 @@ namespace PracticaFinal
                 Canvas.SetTop(etiquetaReps, y - 10);
                 GraficoCanvas.Children.Add(etiquetaReps);
 
-                // Línea guía opcional (BORRAR?)
+                // Línea guía
                 Line lineaGuia = new Line
                 {
                     X1 = margen,
@@ -287,7 +270,7 @@ namespace PracticaFinal
             };
             GraficoCanvas.Children.Add(ejeYPeso);
 
-            // Escala y etiquetas para el eje Y derecho
+            // Escala y etiquetas para el eje Y Pesos
             for (int i = 0; i <= numLineas; i++)
             {
                 double y = altoCanvas - margen - (altoDisponible / numLineas) * i;
@@ -304,7 +287,7 @@ namespace PracticaFinal
                 GraficoCanvas.Children.Add(etiquetaPeso);
             }
 
-            // Etiqueta para el eje Y izquierdo (Repeticiones)
+            // Etiqueta para el eje Y (Repeticiones)
             TextBlock etiquetaEjeYReps = new TextBlock
             {
                 Text = "Repeticiones",
@@ -315,7 +298,7 @@ namespace PracticaFinal
             Canvas.SetTop(etiquetaEjeYReps, margen / 2);
             GraficoCanvas.Children.Add(etiquetaEjeYReps);
 
-            // Etiqueta para el eje Y derecho (Peso en kg)
+            // Etiqueta para el eje Y (Pesos)
             TextBlock etiquetaEjeYPeso = new TextBlock
             {
                 Text = "Peso (kg)",
@@ -327,12 +310,12 @@ namespace PracticaFinal
             GraficoCanvas.Children.Add(etiquetaEjeYPeso);
         }
 
-        private void DibujarBarras(List<Ejecuciones> datosOrdenados, double margen, double anchoCanvas, double altoCanvas, int maxReps, int maxPeso)
+        private void DibujarBarrasyLineas(List<Ejecuciones> datosOrdenados, double margen, double anchoCanvas, double altoCanvas, int maxReps, int maxPeso)
         {
-            double anchoBarra = 30;          // Ancho de cada barra
+            double anchoBarra = 30;
             double altoDisponible = altoCanvas - 2 * margen;
 
-            // Agrupar ejecuciones por fecha
+            // Ejecuciones por fecha
             var gruposPorFecha = datosOrdenados
                 .GroupBy(e => e.FechayHora.Date)
                 .OrderBy(g => g.Key)
@@ -343,7 +326,7 @@ namespace PracticaFinal
             int maxBarrasPorGrupo = gruposPorFecha.Max(g => g.Count());
             double anchoNecesarioPorGrupo = maxBarrasPorGrupo * anchoBarra;
 
-            // Calcular espacio dinámico entre grupos
+            // Calcular espacio entre grupos
             double espacioEntreGrupos = (anchoCanvas - 2 * margen - totalGrupos * anchoNecesarioPorGrupo) /
                                          Math.Max(1, totalGrupos - 1);
 
@@ -384,18 +367,19 @@ namespace PracticaFinal
                     GraficoCanvas.Children.Add(barraReps);
 
                     // Calcular punto del gráfico según el peso
-                    double xPunto = xBarra + anchoBarra / 2;  // Centrar el punto sobre la barra
-                    double yPunto = altoCanvas - margen - alturaPeso; // Ajustar la posición Y según el peso
+                    double xPunto = xBarra + anchoBarra / 2;
+                    double yPunto = altoCanvas - margen - alturaPeso;
 
-                    // Dibujar un punto en el gráfico (un círculo pequeño)
+                    // Dibujar un punto en el gráfico
                     Ellipse punto = new Ellipse
                     {
-                        Width = 8, // Tamaño del punto
+                        Width = 8,
                         Height = 8,
-                        Fill = Brushes.Blue // Color del punto
+                        Fill = Brushes.Blue
                     };
-                    Canvas.SetLeft(punto, xPunto - 4); // Centrar el punto sobre la coordenada X
-                    Canvas.SetTop(punto, yPunto - 4);  // Centrar el punto sobre la coordenada Y
+                    // Centrar el punto sobre x e y
+                    Canvas.SetLeft(punto, xPunto - 4);
+                    Canvas.SetTop(punto, yPunto - 4);
                     GraficoCanvas.Children.Add(punto);
 
                     // Guardar el punto para la línea
@@ -406,16 +390,15 @@ namespace PracticaFinal
             // Dibujar la línea conectando los puntos
             Polyline linea = new Polyline
             {
-                Stroke = Brushes.Blue,      // Color de la línea
-                StrokeThickness = 2,        // Grosor de la línea
-                StrokeDashArray = new DoubleCollection() { 5, 3 }  // Define el patrón de la línea discontinua
+                Stroke = Brushes.Blue,
+                StrokeThickness = 2, 
+                StrokeDashArray = new DoubleCollection() { 5, 3 }
             };
-
             linea.Points = new PointCollection(puntosLinea);
             GraficoCanvas.Children.Add(linea);
         }
 
-
+        // Dibujamos las fechas
         private void DibujarEtiquetasX(List<Ejecuciones> datosOrdenados, double margen, double altoCanvas)
         {
             // Obtener fechas únicas ordenadas
@@ -425,9 +408,9 @@ namespace PracticaFinal
                 .OrderBy(fecha => fecha)
                 .ToList();
 
-            // Calcular espacio entre grupos de acuerdo con el ancho del Canvas
+            // Calcular espacio entre grupos
             double anchoCanvas = GraficoCanvas.Width;
-            double anchoBarra = 30; // Ancho de cada barra
+            double anchoBarra = 30;
             var gruposPorFecha = datosOrdenados
                 .GroupBy(e => e.FechayHora.Date)
                 .OrderBy(g => g.Key)
@@ -437,14 +420,14 @@ namespace PracticaFinal
             double espacioEntreGrupos = (anchoCanvas - 2 * margen - maxBarrasPorGrupo * anchoBarra * gruposPorFecha.Count) /
                                          (gruposPorFecha.Count - 1);
 
-            espacioEntreGrupos = Math.Max(10, espacioEntreGrupos); // Asegurar un mínimo espacio
+            espacioEntreGrupos = Math.Max(10, espacioEntreGrupos);
 
             // Dibujar etiquetas para cada fecha
             for (int i = 0; i < fechasUnicas.Count; i++)
             {
                 var fecha = fechasUnicas[i];
 
-                // Calcular la posición X de la etiqueta (igual al cálculo base de las barras)
+                // Calcular la posición X
                 double xBase = margen + i * (anchoBarra * maxBarrasPorGrupo + espacioEntreGrupos);
 
                 // Etiqueta de la fecha
@@ -457,8 +440,8 @@ namespace PracticaFinal
                 };
 
                 // Ajustar posición
-                Canvas.SetLeft(etiquetaFecha, xBase - anchoBarra / 2); // Centrar la etiqueta
-                Canvas.SetTop(etiquetaFecha, altoCanvas - 30);        // Debajo del eje X
+                Canvas.SetLeft(etiquetaFecha, xBase - anchoBarra / 2);
+                Canvas.SetTop(etiquetaFecha, altoCanvas - 30);
                 GraficoCanvas.Children.Add(etiquetaFecha);
             }
         }

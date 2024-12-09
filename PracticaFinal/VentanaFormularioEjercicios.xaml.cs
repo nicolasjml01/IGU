@@ -25,6 +25,7 @@ namespace PracticaFinal
         // Contructor para crear un nuevo ejercicio
         public VentanaFormularioEjercicios()
         {
+            this.Title = $"Añadir Ejercicio";
             InitializeComponent();
             // Esto indica que estamos creando un nuevo ejercicio
             ejercicioEditado = null;
@@ -33,6 +34,7 @@ namespace PracticaFinal
         // Constructor para modificar un ejercicio existente
         public VentanaFormularioEjercicios(Ejercicios ejercicio)
         {
+            this.Title = $"Modificar Ejercicio";
             InitializeComponent();
             ejercicioEditado = ejercicio;
 

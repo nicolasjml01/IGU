@@ -8,15 +8,14 @@ using System.Threading.Tasks;
 
 namespace PracticaFinal
 {
-    // Clase utilizada para almacenar la informacion de cada ejercicio
     public class Ejercicios : INotifyPropertyChanged
     {
         private string nombre;
         private string descripcion;
         private string gruposMusculares;
 
-        // Colección de ejecuciones asociadas a este ejercicio
-        public ObservableCollection<Ejecuciones> Ejecuciones { get; set; } = new ObservableCollection<Ejecuciones>();
+        // Evento para notificar cuando el nombre cambie
+        public event Action<string, string> NombreCambiado;
 
 
         public string Nombre
@@ -26,8 +25,12 @@ namespace PracticaFinal
             {
                 if (nombre != value)
                 {
+                    string nombreAnterior = nombre;
                     nombre = value;
                     OnPropertyChanged(nameof(Nombre));
+
+                    // Notificar que el nombre cambió
+                    NombreCambiado?.Invoke(nombreAnterior, nombre);
                 }
             }
         }
